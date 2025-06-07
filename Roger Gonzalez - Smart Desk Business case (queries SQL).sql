@@ -1,5 +1,5 @@
---1.Análisis de Ventas y Beneficio por Categoría de Producto para Adabs Entertainment en 2020
-----Realiza un análisis de las ventas y el beneficio total desglosado por categoría de producto exclusivamente para la cuenta Adabs Entertainment durante el año 2020. Calcula los sumatorios de Ventas (mantenimiento, producto, partes, soporte, totales), número de unidades vendidas y beneficio total.
+--1. Sales and Profit Analysis by Product Category for Adabs Entertainment in 2020
+----Conducting an analysis of total sales and profit broken down by product category exclusively for the Adabs Entertainment account during the year 2020. Calculate the sums of Sales (maintenance, product, parts, support, totals), number of units sold, and total profit.
 
 SELECT * FROM FORECASTS;
 SELECT * FROM ACCOUNTS;
@@ -18,9 +18,8 @@ FROM SALES
 WHERE account = 'Adabs Entertainment' AND year = 2020
 GROUP BY category;
 
-
---2. Comparación de Ventas, Unidades Vendidas y Beneficio entre Países en las Regiones APAC y EMEA
-----Compara el rendimiento de ventas entre los diferentes países pertenecientes a las regiones APAC y EMEA. Para obtener los siguientes indicadores (ingreso promedio, numero de unidades vendidas promedio, beneficio promedio)
+--2. Comparison of Sales, Units Sold, and Profit Between Countries in the APAC and EMEA Regions
+----Comparing sales performance across different countries within the APAC and EMEA regions. Calculate the following metrics: average revenue, average units sold, and average profit.
 
 SELECT country, ROUND(AVG(total), 2) AS ingreso_promedio, ROUND(AVG(units_sold), 2) AS unidas_vendidas_promedio, ROUND(AVG(profit), 2) AS beneficio_promedio
 FROM ACCOUNTS AS a
@@ -30,9 +29,8 @@ WHERE region = 'APAC' OR region = 'EMEA'
 GROUP BY country
 ORDER BY ingreso_promedio DESC;
 
-
---3. Análisis del Beneficio Total (SALES) por Industria (ACCOUNTS): Estudio de Clientes en etapa de Compromiso (FORECASTS) (Pipeline, Upside, Commit)
-----Calcula el beneficio total para cada industria y clasifícalo como "Alto" si supera los $1,000,000 o como "Normal" si no lo hace. Realiza este cálculo considerando únicamente las filas correspondientes a las cuentas clasificadas como Commit (acuerdos cercanos al cierre) y cuyo pronóstico total de beneficios sea superior a $500,000.
+--3. Total Profit Analysis (SALES) by Industry (ACCOUNTS): Study of Clients in the Commitment Stage (FORECASTS) (Pipeline, Upside, Commit)
+----Calculate the total profit for each industry and classify it as "High" if it exceeds $1,000,000 or "Normal" if it does not. 
 
 SELECT industry, SUM(profit) AS beneficio_total,
 	CASE
@@ -51,9 +49,8 @@ WHERE s.account IN (
 GROUP BY industry
 ORDER BY industry;
 
-
---4. Evolución del Pronóstico y Beneficio Real: Análisis de la Trayectoria por Categoría.
-----Calcula el pronóstico de beneficio para el año 2022 y el beneficio real para el primer trimestre de 2020 y el tercer trimestre de 2021, agrupando los resultados por categoría de producto. Además, queremos identificar la oportunidad más antigua y la más reciente dentro de cada categoría.
+--4. Forecast vs. Actual Profit Evolution: Category-Level Trajectory Analysis
+----Calculate the profit forecast for the year 2022 and the actual profit for Q1 2020 and Q3 2021, grouping the results by product category. Additionally, identify the oldest and the most recent opportunity within each category.
 
 WITH vista_completa AS (
 	SELECT
@@ -83,8 +80,9 @@ ORDER BY beneficio_total DESC, pronostico_total DESC;
 
 
 
----------------------------------------------------------CASO PRACTICO---------------------------------------------------------
---Analisis Exploratorio Ventas (general)
+---------------------------------------------------------BUSINESS CASE---------------------------------------------------------
+--Exploratory Sales Analysis (General)
+
 SELECT 
 	COUNT(DISTINCT(ACCOUNT)) AS num_clientes,
 	COUNT(*) AS num_filas,
@@ -104,7 +102,8 @@ FROM SALES
 WHERE year IN (2020, 2021);
 
 
---Analisis Exploratorio Ventas (Por Paises)
+--Exploratory Sales Analysis (By Country)
+
 CREATE OR REPLACE VIEW sales_by_countries AS
 	WITH customers AS (
 		SELECT *
@@ -138,7 +137,8 @@ SELECT
 FROM sales_by_countries
 WHERE year IN (2020, 2021);
 
---VENTAS POR PAÍSES EN EL 2020 y 2021 (con columna rentabilidad)
+--SALES BY COUNTRY IN 2020 and 2021 (including profitability column)
+
 SELECT * FROM sales_by_countries;
 
 WITH country_growth AS (
