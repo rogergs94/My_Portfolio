@@ -1,0 +1,812 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "collapsed_sections": [
+        "sUD5CwwgNRX9"
+      ],
+      "authorship_tag": "ABX9TyOVgiDf87kuACFot9+/hHb7",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/rogergs94/My_Portfolio/blob/main/RX_Feed_reader\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#!pip install gspread\n",
+        "#!pip install --upgrade gspread gspread_dataframe --quiet\n",
+        "#!pip install --upgrade gspread gspread_dataframe google-auth --quiet"
+      ],
+      "metadata": {
+        "id": "Ho9kICc937aU"
+      },
+      "execution_count": 1,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 77,
+      "metadata": {
+        "id": "dMZPetU33txL"
+      },
+      "outputs": [],
+      "source": [
+        "from google.colab import auth;\n",
+        "auth.authenticate_user()\n",
+        "import gspread\n",
+        "from google.auth import default\n",
+        "creds, _ = default()\n",
+        "gc = gspread.authorize(creds)\n",
+        "\n",
+        "import pandas as pd"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Autenticación en Google\n",
+        "from google.colab import auth\n",
+        "auth.authenticate_user()\n",
+        "\n",
+        "# Importar librerías\n",
+        "import gspread\n",
+        "from google.auth import default\n",
+        "from gspread_dataframe import get_as_dataframe\n",
+        "\n",
+        "# Autenticarse con credenciales actualizadas\n",
+        "creds, _ = default()\n",
+        "gc = gspread.authorize(creds)\n",
+        "\n",
+        "# Abrir Google Sheet por URL\n",
+        "feb_url = \"https://docs.google.com/spreadsheets/d/1rOUFdJ6aUkvo2lrVkjOJzVsH9PfMOeHq4BlGhcgA70E/edit\"\n",
+        "mar_url = \"https://docs.google.com/spreadsheets/d/1rOUFdJ6aUkvo2lrVkjOJzVsH9PfMOeHq4BlGhcgA70E/edit\"\n",
+        "apr_url = \"https://docs.google.com/spreadsheets/d/1wu3bC9RL8_uC80yOIFFhL7lIIZD2SSDR49SZhJ16JzY/edit?gid=18792177#gid=18792177\"\n",
+        "may_url = \"https://docs.google.com/spreadsheets/d/1yvYy1Up0xsSJiG5FkVC7WdENXyeK02t6a-FoTLG0osg/edit?gid=14653188#gid=14653188\"\n",
+        "jun_url = \"https://docs.google.com/spreadsheets/d/1WyR-WiR-dMjLN5rdHb9Jq1KR0rdyziU0OVO486DgV0A/edit?gid=1281463896#gid=1281463896\"\n",
+        "spreadsheet_feb = gc.open_by_url(feb_url)\n",
+        "spreadsheet_mar = gc.open_by_url(mar_url)\n",
+        "spreadsheet_apr = gc.open_by_url(apr_url)\n",
+        "spreadsheet_may = gc.open_by_url(may_url)\n",
+        "spreadsheet_jun = gc.open_by_url(jun_url)\n",
+        "\n",
+        "# Seleccionar hoja \"All Data\"\n",
+        "worksheet_feb = spreadsheet_feb.worksheet(\"alldata\")\n",
+        "worksheet_mar = spreadsheet_mar.worksheet(\"alldata\")\n",
+        "worksheet_apr = spreadsheet_apr.worksheet(\"alldata\")\n",
+        "worksheet_may = spreadsheet_may.worksheet(\"alldata\")\n",
+        "worksheet_jun = spreadsheet_jun.worksheet(\"alldata\")\n",
+        "\n",
+        "# Convertir a DataFrame\n",
+        "df_feb = get_as_dataframe(worksheet_feb, evaluate_formulas=True)\n",
+        "df_mar = get_as_dataframe(worksheet_mar, evaluate_formulas=True)\n",
+        "df_apr = get_as_dataframe(worksheet_apr, evaluate_formulas=True)\n",
+        "df_may = get_as_dataframe(worksheet_may, evaluate_formulas=True)\n",
+        "df_jun = get_as_dataframe(worksheet_jun, evaluate_formulas=True)"
+      ],
+      "metadata": {
+        "id": "pvTfY1k_4Ng8"
+      },
+      "execution_count": 78,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df_feb[\"month\"] = df_feb[\"Column 20\"]\n",
+        "Feb = df_feb.drop(columns=[\"Column 20\", \"Month_name\", \"Month\"])\n",
+        "february = Feb[Feb[\"month\"] == \"February\"]\n"
+      ],
+      "metadata": {
+        "id": "74R6FTdM4TGM"
+      },
+      "execution_count": 80,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df_mar[\"month\"] = df_feb[\"Column 20\"]\n",
+        "Mar = df_feb.drop(columns=[\"Column 20\", \"Month_name\", \"Month\"])\n",
+        "march = Mar[Mar[\"month\"] == \"March\"]\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "giH4KrYZ8nOU"
+      },
+      "execution_count": 81,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df_apr[\"month\"] = df_apr[\"Column 20\"]\n",
+        "Apr = df_apr.drop(columns=[\"Column 20\", \"Month_name\", \"Month\"])\n",
+        "april = Apr[Apr[\"month\"] == \"April\"]\n"
+      ],
+      "metadata": {
+        "id": "8q0xP9Zm9Dhf"
+      },
+      "execution_count": 82,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df_may[\"month\"] = df_may[\"Column 20\"]\n",
+        "May = df_may.drop(columns=[\"Column 20\", \"Month_name\", \"Month\"])\n",
+        "may = May[May[\"month\"] == \"May\"].reset_index(drop=True)\n"
+      ],
+      "metadata": {
+        "id": "jiazLV4H5BR3"
+      },
+      "execution_count": 83,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df_jun[\"month\"] = df_jun[\"Column 20\"]\n",
+        "Jun = df_jun.drop(columns=[\"Column 20\", \"Month_name\", \"Month\"])\n",
+        "june = Jun[Jun[\"month\"] == \"June\"]\n"
+      ],
+      "metadata": {
+        "id": "Hv_NtzgYUTJY"
+      },
+      "execution_count": 84,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#join de todos los datasets\n",
+        "# Unir los cuatro datasets\n",
+        "df = pd.concat([february, march, april, may, june], ignore_index=True)\n",
+        "\n",
+        "# Mostrar primeras filas para comprobar\n",
+        "cleaned_df = df.drop(columns=[\"currency\", \"medium\", \"vendor_product\", \"campaign\", \"weighted_conversion_rate\", \"Weekly_Budget\", \"tCPA\", \"Week\", \"conversion_rate\", \"cpc\", \"cpa\"])\n",
+        "cleaned_df.info()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "DEV8Ab2882Rr",
+        "outputId": "ea978a32-e8de-47fc-ca6c-d04f3d15939f"
+      },
+      "execution_count": 85,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 36977 entries, 0 to 36976\n",
+            "Data columns (total 9 columns):\n",
+            " #   Column   Non-Null Count  Dtype  \n",
+            "---  ------   --------------  -----  \n",
+            " 0   vendor   36977 non-null  object \n",
+            " 1   cid      36977 non-null  float64\n",
+            " 2   client   36977 non-null  object \n",
+            " 3   date     36977 non-null  object \n",
+            " 4   cost     36977 non-null  float64\n",
+            " 5   applies  36977 non-null  float64\n",
+            " 6   clicks   36977 non-null  float64\n",
+            " 7   TYPE     36910 non-null  object \n",
+            " 8   month    36977 non-null  object \n",
+            "dtypes: float64(4), object(5)\n",
+            "memory usage: 2.5+ MB\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Cambio de tipo de variables en cid, applies, clicks y date:\n",
+        "cleaned_df[\"cid\"] = cleaned_df[\"cid\"].astype(int)\n",
+        "cleaned_df[\"applies\"] = cleaned_df[\"applies\"].round(0).astype(int)  # redondear antes de convertir a int\n",
+        "cleaned_df[\"clicks\"] = cleaned_df[\"clicks\"].round(0).astype(int)\n",
+        "cleaned_df[\"date\"] = pd.to_datetime(cleaned_df[\"date\"], format='mixed', dayfirst=False)\n",
+        "\n",
+        "\n",
+        "# Añado tres columnas: rpc, rpa y cvr\n",
+        "# Para evitar división por cero, usamos .where o .mask o np.where\n",
+        "cleaned_df[\"rpc\"] = (cleaned_df[\"cost\"] / cleaned_df[\"clicks\"]).round(2)\n",
+        "\n",
+        "# Para rpa, cuando applies == 0, poner 0, else calcular cost/applies\n",
+        "cleaned_df[\"rpa\"] = cleaned_df.apply(\n",
+        "    lambda row: 0 if row[\"applies\"] == 0 else round(row[\"cost\"] / row[\"applies\"], 2),\n",
+        "    axis=1\n",
+        ")\n",
+        "\n",
+        "# cvr = applies / clicks * 100, evitando división por cero\n",
+        "cleaned_df[\"cvr\"] = cleaned_df.apply(\n",
+        "    lambda row: round((row[\"applies\"] / row[\"clicks\"]) * 100, 2) if row[\"clicks\"] != 0 else 0,\n",
+        "    axis=1\n",
+        ")\n",
+        "\n",
+        "# Filtrar solo por TYPE = 'Agency Reach' y ordenar por fecha descendente\n",
+        "cleaned_df_Reach = cleaned_df[cleaned_df[\"TYPE\"] == \"Agency Reach\"].sort_values(by=\"date\", ascending=False)\n",
+        "reach = cleaned_df_Reach[cleaned_df_Reach[\"vendor\"] != \"reach-sonicjobget\"]\n",
+        "\n",
+        "\n",
+        "# Seleccionar y ordenar columnas\n",
+        "reach = cleaned_df_Reach[[\"month\", \"cid\", \"client\", \"date\", \"cost\", \"clicks\", \"applies\", \"rpc\", \"rpa\", \"cvr\"]]\n",
+        "reach.head()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 206
+        },
+        "id": "_DMDTsT89hSv",
+        "outputId": "407a97bc-1ed2-493b-93c3-db2b2400aa2e"
+      },
+      "execution_count": 87,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "      month   cid                          client       date   cost  clicks  \\\n",
+              "35777  June  3435                      TEKsystems 2025-06-09  16.25      58   \n",
+              "36096  June  3519                           Bosch 2025-06-09   0.31       1   \n",
+              "35194  June   713  Rush University Medical Center 2025-06-09   6.00      10   \n",
+              "36639  June  3666                  Think Together 2025-06-09   1.80       4   \n",
+              "36060  June  3517                     WelbeHealth 2025-06-09  25.50      30   \n",
+              "\n",
+              "       applies   rpc   rpa    cvr  \n",
+              "35777       11  0.28  1.48  18.97  \n",
+              "36096        0  0.31  0.00   0.00  \n",
+              "35194        0  0.60  0.00   0.00  \n",
+              "36639        0  0.45  0.00   0.00  \n",
+              "36060        0  0.85  0.00   0.00  "
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-5b9f2c36-87ca-4799-abe8-878f7e136277\" class=\"colab-df-container\">\n",
+              "    <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>month</th>\n",
+              "      <th>cid</th>\n",
+              "      <th>client</th>\n",
+              "      <th>date</th>\n",
+              "      <th>cost</th>\n",
+              "      <th>clicks</th>\n",
+              "      <th>applies</th>\n",
+              "      <th>rpc</th>\n",
+              "      <th>rpa</th>\n",
+              "      <th>cvr</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>35777</th>\n",
+              "      <td>June</td>\n",
+              "      <td>3435</td>\n",
+              "      <td>TEKsystems</td>\n",
+              "      <td>2025-06-09</td>\n",
+              "      <td>16.25</td>\n",
+              "      <td>58</td>\n",
+              "      <td>11</td>\n",
+              "      <td>0.28</td>\n",
+              "      <td>1.48</td>\n",
+              "      <td>18.97</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>36096</th>\n",
+              "      <td>June</td>\n",
+              "      <td>3519</td>\n",
+              "      <td>Bosch</td>\n",
+              "      <td>2025-06-09</td>\n",
+              "      <td>0.31</td>\n",
+              "      <td>1</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0.31</td>\n",
+              "      <td>0.00</td>\n",
+              "      <td>0.00</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>35194</th>\n",
+              "      <td>June</td>\n",
+              "      <td>713</td>\n",
+              "      <td>Rush University Medical Center</td>\n",
+              "      <td>2025-06-09</td>\n",
+              "      <td>6.00</td>\n",
+              "      <td>10</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0.60</td>\n",
+              "      <td>0.00</td>\n",
+              "      <td>0.00</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>36639</th>\n",
+              "      <td>June</td>\n",
+              "      <td>3666</td>\n",
+              "      <td>Think Together</td>\n",
+              "      <td>2025-06-09</td>\n",
+              "      <td>1.80</td>\n",
+              "      <td>4</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0.45</td>\n",
+              "      <td>0.00</td>\n",
+              "      <td>0.00</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>36060</th>\n",
+              "      <td>June</td>\n",
+              "      <td>3517</td>\n",
+              "      <td>WelbeHealth</td>\n",
+              "      <td>2025-06-09</td>\n",
+              "      <td>25.50</td>\n",
+              "      <td>30</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0.85</td>\n",
+              "      <td>0.00</td>\n",
+              "      <td>0.00</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>\n",
+              "    <div class=\"colab-df-buttons\">\n",
+              "\n",
+              "  <div class=\"colab-df-container\">\n",
+              "    <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-5b9f2c36-87ca-4799-abe8-878f7e136277')\"\n",
+              "            title=\"Convert this dataframe to an interactive table.\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\">\n",
+              "    <path d=\"M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z\"/>\n",
+              "  </svg>\n",
+              "    </button>\n",
+              "\n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-buttons div {\n",
+              "      margin-bottom: 4px;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "    <script>\n",
+              "      const buttonEl =\n",
+              "        document.querySelector('#df-5b9f2c36-87ca-4799-abe8-878f7e136277 button.colab-df-convert');\n",
+              "      buttonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "      async function convertToInteractive(key) {\n",
+              "        const element = document.querySelector('#df-5b9f2c36-87ca-4799-abe8-878f7e136277');\n",
+              "        const dataTable =\n",
+              "          await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                    [key], {});\n",
+              "        if (!dataTable) return;\n",
+              "\n",
+              "        const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "          '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "          + ' to learn more about interactive tables.';\n",
+              "        element.innerHTML = '';\n",
+              "        dataTable['output_type'] = 'display_data';\n",
+              "        await google.colab.output.renderOutput(dataTable, element);\n",
+              "        const docLink = document.createElement('div');\n",
+              "        docLink.innerHTML = docLinkHtml;\n",
+              "        element.appendChild(docLink);\n",
+              "      }\n",
+              "    </script>\n",
+              "  </div>\n",
+              "\n",
+              "\n",
+              "    <div id=\"df-9fa296c6-e559-4bc7-9d96-60cde0bcd178\">\n",
+              "      <button class=\"colab-df-quickchart\" onclick=\"quickchart('df-9fa296c6-e559-4bc7-9d96-60cde0bcd178')\"\n",
+              "                title=\"Suggest charts\"\n",
+              "                style=\"display:none;\">\n",
+              "\n",
+              "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\"viewBox=\"0 0 24 24\"\n",
+              "     width=\"24px\">\n",
+              "    <g>\n",
+              "        <path d=\"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z\"/>\n",
+              "    </g>\n",
+              "</svg>\n",
+              "      </button>\n",
+              "\n",
+              "<style>\n",
+              "  .colab-df-quickchart {\n",
+              "      --bg-color: #E8F0FE;\n",
+              "      --fill-color: #1967D2;\n",
+              "      --hover-bg-color: #E2EBFA;\n",
+              "      --hover-fill-color: #174EA6;\n",
+              "      --disabled-fill-color: #AAA;\n",
+              "      --disabled-bg-color: #DDD;\n",
+              "  }\n",
+              "\n",
+              "  [theme=dark] .colab-df-quickchart {\n",
+              "      --bg-color: #3B4455;\n",
+              "      --fill-color: #D2E3FC;\n",
+              "      --hover-bg-color: #434B5C;\n",
+              "      --hover-fill-color: #FFFFFF;\n",
+              "      --disabled-bg-color: #3B4455;\n",
+              "      --disabled-fill-color: #666;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart {\n",
+              "    background-color: var(--bg-color);\n",
+              "    border: none;\n",
+              "    border-radius: 50%;\n",
+              "    cursor: pointer;\n",
+              "    display: none;\n",
+              "    fill: var(--fill-color);\n",
+              "    height: 32px;\n",
+              "    padding: 0;\n",
+              "    width: 32px;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart:hover {\n",
+              "    background-color: var(--hover-bg-color);\n",
+              "    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "    fill: var(--button-hover-fill-color);\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart-complete:disabled,\n",
+              "  .colab-df-quickchart-complete:disabled:hover {\n",
+              "    background-color: var(--disabled-bg-color);\n",
+              "    fill: var(--disabled-fill-color);\n",
+              "    box-shadow: none;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-spinner {\n",
+              "    border: 2px solid var(--fill-color);\n",
+              "    border-color: transparent;\n",
+              "    border-bottom-color: var(--fill-color);\n",
+              "    animation:\n",
+              "      spin 1s steps(1) infinite;\n",
+              "  }\n",
+              "\n",
+              "  @keyframes spin {\n",
+              "    0% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "      border-left-color: var(--fill-color);\n",
+              "    }\n",
+              "    20% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    30% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    40% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    60% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    80% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "    90% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "  }\n",
+              "</style>\n",
+              "\n",
+              "      <script>\n",
+              "        async function quickchart(key) {\n",
+              "          const quickchartButtonEl =\n",
+              "            document.querySelector('#' + key + ' button');\n",
+              "          quickchartButtonEl.disabled = true;  // To prevent multiple clicks.\n",
+              "          quickchartButtonEl.classList.add('colab-df-spinner');\n",
+              "          try {\n",
+              "            const charts = await google.colab.kernel.invokeFunction(\n",
+              "                'suggestCharts', [key], {});\n",
+              "          } catch (error) {\n",
+              "            console.error('Error during call to suggestCharts:', error);\n",
+              "          }\n",
+              "          quickchartButtonEl.classList.remove('colab-df-spinner');\n",
+              "          quickchartButtonEl.classList.add('colab-df-quickchart-complete');\n",
+              "        }\n",
+              "        (() => {\n",
+              "          let quickchartButtonEl =\n",
+              "            document.querySelector('#df-9fa296c6-e559-4bc7-9d96-60cde0bcd178 button');\n",
+              "          quickchartButtonEl.style.display =\n",
+              "            google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "        })();\n",
+              "      </script>\n",
+              "    </div>\n",
+              "\n",
+              "    </div>\n",
+              "  </div>\n"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "dataframe",
+              "variable_name": "reach",
+              "repr_error": "Out of range float values are not JSON compliant: inf"
+            }
+          },
+          "metadata": {},
+          "execution_count": 87
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#exportar a un archivo csv\n",
+        "reach.to_csv(\"reach.csv\", index=False)\n",
+        "\n",
+        "#descargar el archivo a mi ordenador\n",
+        "from google.colab import files\n",
+        "files.download(\"reach.csv\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 17
+        },
+        "id": "Tu0SYpXBNQ1V",
+        "outputId": "32da4098-8203-480e-f0cd-015d7dec8dcf"
+      },
+      "execution_count": 89,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.Javascript object>"
+            ],
+            "application/javascript": [
+              "\n",
+              "    async function download(id, filename, size) {\n",
+              "      if (!google.colab.kernel.accessAllowed) {\n",
+              "        return;\n",
+              "      }\n",
+              "      const div = document.createElement('div');\n",
+              "      const label = document.createElement('label');\n",
+              "      label.textContent = `Downloading \"${filename}\": `;\n",
+              "      div.appendChild(label);\n",
+              "      const progress = document.createElement('progress');\n",
+              "      progress.max = size;\n",
+              "      div.appendChild(progress);\n",
+              "      document.body.appendChild(div);\n",
+              "\n",
+              "      const buffers = [];\n",
+              "      let downloaded = 0;\n",
+              "\n",
+              "      const channel = await google.colab.kernel.comms.open(id);\n",
+              "      // Send a message to notify the kernel that we're ready.\n",
+              "      channel.send({})\n",
+              "\n",
+              "      for await (const message of channel.messages) {\n",
+              "        // Send a message to notify the kernel that we're ready.\n",
+              "        channel.send({})\n",
+              "        if (message.buffers) {\n",
+              "          for (const buffer of message.buffers) {\n",
+              "            buffers.push(buffer);\n",
+              "            downloaded += buffer.byteLength;\n",
+              "            progress.value = downloaded;\n",
+              "          }\n",
+              "        }\n",
+              "      }\n",
+              "      const blob = new Blob(buffers, {type: 'application/binary'});\n",
+              "      const a = document.createElement('a');\n",
+              "      a.href = window.URL.createObjectURL(blob);\n",
+              "      a.download = filename;\n",
+              "      div.appendChild(a);\n",
+              "      a.click();\n",
+              "      div.remove();\n",
+              "    }\n",
+              "  "
+            ]
+          },
+          "metadata": {}
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.Javascript object>"
+            ],
+            "application/javascript": [
+              "download(\"download_f297c2b5-a8a6-4e5a-9b35-f3ae04aa5733\", \"reach.csv\", 2079230)"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# OTRO"
+      ],
+      "metadata": {
+        "id": "sUD5CwwgNRX9"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "reach.info()"
+      ],
+      "metadata": {
+        "id": "8tLti4MQ_Emf"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "reach.describe()"
+      ],
+      "metadata": {
+        "id": "lUaYGVcvA6FP"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#quitamos client = \"DoorDash\" para evitar valores demasiado extremos en cost, rpc y rpa\n",
+        "reach = reach[reach[\"client\"] != \"DoorDash\"]\n",
+        "reach.describe()"
+      ],
+      "metadata": {
+        "id": "V-7Pvx-wJk9U"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#dame los Null de cpa\n",
+        "reach[reach['clicks'] == 5752.000000]\n"
+      ],
+      "metadata": {
+        "id": "cQxo-7nEBQO9"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Vemos que en clicks, hay una desviación excesivamente grande debido a que tenemos un valoe de 5752 clicks (spike). Quitamos cualquier valor por encima de 1000 clicks:\n",
+        "reach = reach[reach['clicks'] < 1000]\n",
+        "reach.describe()"
+      ],
+      "metadata": {
+        "id": "wRI0Io0XKBlm"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Vemos que aparecen medias de inf en rpc. Observamos que pasa:\n",
+        "\n",
+        "reach_no0 = reach[reach[\"rpc\"] != 0]\n",
+        "reach_no0.describe()"
+      ],
+      "metadata": {
+        "id": "rIZqdv0_K56C"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "n4Enc8XXMgU6"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#histograma para cost, clicks, applies, rpc, rpa y cvr\n",
+        "import matplotlib.pyplot as plt\n",
+        "import seaborn as sns\n",
+        "\n",
+        "#histograma para cost\n",
+        "plt.hist(reach['applies'], bins=10)\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "YPqlgNDEDB1B"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "KLYawSC6F7K7"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
